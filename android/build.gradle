@@ -1,35 +1,36 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
 buildscript {
     ext {
-        buildToolsVersion = "33.0.0"
         minSdkVersion = 21
         compileSdkVersion = 33
         targetSdkVersion = 33
-        ndkVersion = "23.1.7779620"
-        kotlinVersion = "1.9.0"
+        // Ensure Kotlin version is aligned with Android Gradle Plugin version
+        kotlinVersion = "1.8.20" // Updated Kotlin version for compatibility
     }
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:8.1.1")
-        classpath("com.facebook.react:react-native-gradle-plugin")
+        // Update Android Gradle Plugin (AGP) to a version compatible with Gradle 8.3.
+        // The error indicates an internal issue with resource processing, often resolved by AGP updates.
+        classpath("com.android.tools.build:gradle:8.1.3") // Updated AGP version
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
     }
 }
 
 allprojects {
     repositories {
-        google()
         mavenCentral()
-        maven { url 'https://www.jitpack.io' }
+        maven { url "https://www.jitpack.io" } // Common for some React Native libraries
+        google()
     }
-    // Fix for Kotlin incompatible version error in CI (Gradle 8.3 vs Kotlin 1.7 metadata)
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-        kotlinOptions {
-            freeCompilerArgs += [
-                "-Xskip-metadata-version-check"
-            ]
-        }
-    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
